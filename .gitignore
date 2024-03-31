@@ -5,9 +5,6 @@ npm-debug.log
 # Build files
 /build
 
-# Environment variables
-.env
-
 # macOS files
 .DS_Store
 
