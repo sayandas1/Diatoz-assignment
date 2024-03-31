@@ -49,5 +49,4 @@ Files and Configuration
 main.tf: Contains the Terraform configuration for setting up AWS resources.
 variables.tf: Defines input variables for the Terraform configuration.
 buildspec.yml: Specifies the build phases and commands for CodeBuild.
-imagedefinitions.json: Defines the Docker image to deploy to ECS.
 .github/workflows/main.yml: GitHub Actions workflow for CI/CD pipeline.
