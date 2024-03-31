@@ -1,20 +1,52 @@
-# springboot-aws-deploy
+# Full-Stack Application Deployment on AWS ECS with CI/CD
 
-This is a sample microservice to deploy it on AWS ECS.
+This project demonstrates how to deploy a full-stack application on an AWS ECS cluster using Infrastructure as Code (IaC) with Terraform, along with automated Continuous Integration (CI) and Continuous Deployment (CD) using AWS services like CodePipeline and CodeBuild.
 
-To build automated AWS CodePipeline and deploy microservice to AWS ECS, follow tutorial as shown in video :
+## Features
 
-Video Link :https://youtu.be/ARGmrYFfv44
+- Sets up a VPC with public and private subnets on AWS.
+- Restricts access using security groups for frontend and backend services.
+- Automates CI/CD pipeline using AWS CodePipeline.
+- Builds Docker images and pushes them to Amazon ECR.
+- Deploys Docker images to ECS Fargate cluster.
+- Creates CloudWatch alarms for monitoring ECS instances.
 
-Health Check command for AWS Task definition : 
-```
-CMD-SHELL,curl -f http://localhost:8080/actuator/health || exit 1
-```
+## Prerequisites
 
+Before you begin, ensure you have the following:
 
-Prerequisite :
-1. AWS acconunt.
-2. Git and docker installed on the machine.
-3. Docker should be started before building docker image.
-4. And your favourite code editor 
+- An AWS account with appropriate permissions.
+- Terraform installed on your local machine.
+- GitHub repository for your application with appropriate access tokens.
 
+## Getting Started
+
+1. Clone this repository:
+
+git clone https://github.com/sayandas1/Diatoz-assignment
+cd Diatoz-assignment
+
+2. Update the `terraform.tfvars` file with your AWS credentials and GitHub repository details:
+
+```hcl
+github_repo_owner = "your-github-owner"
+github_repo_name = "your-repo-name"
+github_branch = "main"
+github_token = "your-github-token"
+
+aws_access_key = "your-aws-access-key"
+aws_secret_key = "your-aws-secret-key"
+
+Initialize Terraform and apply the configuration:
+
+terraform init
+terraform apply
+
+Once the infrastructure is deployed, push your code changes to your GitHub repository to trigger the CI/CD pipeline.
+
+Files and Configuration
+main.tf: Contains the Terraform configuration for setting up AWS resources.
+variables.tf: Defines input variables for the Terraform configuration.
+buildspec.yml: Specifies the build phases and commands for CodeBuild.
+imagedefinitions.json: Defines the Docker image to deploy to ECS.
+.github/workflows/main.yml: GitHub Actions workflow for CI/CD pipeline.

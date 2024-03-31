@@ -1,0 +1,29 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build application
+        run: npm run build
+
+      - name: Login to ECR
+        run: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 123456789012.dkr.ecr.us-east-2.amazonaws.com
+
+      - name: Build Docker image
+        run: docker build -t my-repository .
+
+      - name: Push Docker image to ECR
+        run: docker tag my-repository:latest 123456789012.dkr.ecr.us-east-2.amazonaws.com/my-repository:latest && docker push 123456789012.dkr.ecr.us-east-2.amazonaws.com/my-repository:latest

@@ -1,6 +1,13 @@
-FROM eclipse-temurin:17-jdk-alpine
-RUN apk add curl
-VOLUME /tmp
-EXPOSE 8080
-ADD target/springboot-aws-deploy-service.jar springboot-aws-deploy-service.jar
-ENTRYPOINT ["java","-jar","/springboot-aws-deploy-service.jar"]
+FROM node:14
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
