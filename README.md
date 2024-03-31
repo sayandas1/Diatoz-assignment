@@ -24,6 +24,7 @@ Before you begin, ensure you have the following:
 1. Clone this repository:
 
 git clone https://github.com/sayandas1/Diatoz-assignment
+
 cd Diatoz-assignment
 
 2. Update the `terraform.tfvars` file with your AWS credentials and GitHub repository details:
