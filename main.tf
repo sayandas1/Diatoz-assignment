@@ -53,10 +53,10 @@ module "security_group_backend" {
   
   ingress = [
     {
-      from_port   = 3306
-      to_port     = 3306
+      from_port   = 27017
+      to_port     = 27017
       protocol    = "tcp"
-      cidr_blocks = ["10.0.1.0/24"] // Allow access from frontend subnet
+      cidr_blocks = ["10.0.1.0/24"] 
     }
   ]
   

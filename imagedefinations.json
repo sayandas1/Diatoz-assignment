@@ -1,7 +1,0 @@
-[
-    {
-      "name": "my-container",
-      "imageUri": "123456789012.dkr.ecr.us-east-2.amazonaws.com/my-repository:latest"
-    }
-  ]
-  

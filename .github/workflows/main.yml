@@ -13,17 +13,39 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
       - name: Install dependencies
         run: npm install
 
       - name: Build application
         run: npm run build
 
-      - name: Login to ECR
-        run: aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 123456789012.dkr.ecr.us-east-2.amazonaws.com
+      - name: Login to AWS ECR
+        run: |
+          echo ${{ secrets.AWS_ACCESS_KEY_ID }} | base64 --decode > /tmp/aws_access_key_id
+          echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} | base64 --decode > /tmp/aws_secret_access_key
+          echo ${{ secrets.AWS_ACCOUNT_ID }} | base64 --decode > /tmp/aws_account_id
+          aws configure set aws_access_key_id "$(cat /tmp/aws_access_key_id)"
+          aws configure set aws_secret_access_key "$(cat /tmp/aws_secret_access_key)"
+          aws configure set region ${{ secrets.AWS_DEFAULT_REGION }}
+          aws ecr get-login-password --region ${{ secrets.AWS_DEFAULT_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_DEFAULT_REGION }}.amazonaws.com
 
-      - name: Build Docker image
-        run: docker build -t my-repository .
+      - name: Build and push Docker image
+        run: |
+          docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_DEFAULT_REGION }}.amazonaws.com/${{ secrets.IMAGE_REPO_NAME }}:$GITHUB_SHA .
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_DEFAULT_REGION }}.amazonaws.com/${{ secrets.IMAGE_REPO_NAME }}:$GITHUB_SHA
 
-      - name: Push Docker image to ECR
-        run: docker tag my-repository:latest 123456789012.dkr.ecr.us-east-2.amazonaws.com/my-repository:latest && docker push 123456789012.dkr.ecr.us-east-2.amazonaws.com/my-repository:latest
+      - name: Generate imagedefinitions.json
+        run: printf '[{"name":"my-container","imageUri":"%s"}]' ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_DEFAULT_REGION }}.amazonaws.com/${{ secrets.IMAGE_REPO_NAME }}:$GITHUB_SHA > imagedefinitions.json
+
+      - name: Deploy to ECS
+        run: |
+          echo ${{ secrets.AWS_ACCOUNT_ID }} | base64 --decode > /tmp/aws_account_id
+          aws configure set aws_access_key_id "$(cat /tmp/aws_access_key_id)"
+          aws configure set aws_secret_access_key "$(cat /tmp/aws_secret_access_key)"
+          aws configure set region ${{ secrets.AWS_DEFAULT_REGION }}
+          aws ecs update-service --cluster ${{ secrets.ECS_CLUSTER_NAME }} --service ${{ secrets.ECS_SERVICE_NAME }} --force-new-deployment
