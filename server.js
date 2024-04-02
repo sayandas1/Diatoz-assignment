@@ -21,21 +21,21 @@ app.get('/:id', function (req, res) {
 
 app.post('/', function (req, res) {
    res.writeHead(200, {'Content-Type': 'application/json'});
-   var response = { "response" : "Hi, This isPOST method." }
+   var response = { "response" : "Hi, This is POST method." }
    console.log(response);
    res.end(JSON.stringify(response));
 })
 
 app.put('/', function (req, res) {
    res.writeHead(200, {'Content-Type': 'application/json'});
-   var response = { "response" : "Hi, This isPUT method." }
+   var response = { "response" : "Hi, This is PUT method." }
    console.log(response);
    res.end(JSON.stringify(response));
 })
 
 app.delete('/', function (req, res) {
    res.writeHead(200, {'Content-Type': 'application/json'});
-   var response = { "response" : "Hi, This isDELETE method." }
+   var response = { "response" : "Hi, This is DELETE method." }
    console.log(response);
    res.end(JSON.stringify(response));
 })
