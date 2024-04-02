@@ -1,23 +1,15 @@
-# Use the official Node.js 14 image
-FROM node:14
+FROM node:12-alpine
 
-# Set the working directory
-WORKDIR /app
+ENV PORT=80
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+WORKDIR /usr/src/app
 
 # Install dependencies
+COPY package.json /usr/src/app/
 RUN npm install
 
-# Copy the rest of the application files
-COPY . .
+# Copy source
+COPY server.js /usr/src/app
 
-# Build the React frontend
-RUN npm run build
-
-# Expose the port the app runs on
-EXPOSE 3000
-
-# Start the server
-CMD ["npm", "start"]
+EXPOSE $PORT
+CMD [ "npm", "start" ]

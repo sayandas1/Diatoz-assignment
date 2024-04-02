@@ -1,7 +1,0 @@
-github_repo_owner = "sayandas1"
-github_repo_name = "Diatoz-assignment"
-github_branch = "main"
-github_token = "Z2hwX0g5TGY2UldoekVLZlpFanNrTnJkTThxRU5EZzVyTzNTelB2aQ=="
-aws_access_key = "QUtJQVUzV0pJMlhLWk1KS0JDNzY="
-aws_secret_key = "d3NPSVlvWHIvc3lhb09hclNrMko3TTNFUDkwT0J3aFpNeldJSHlOZA=="
-codecommit_http_git_credentials = "OUNyOTNRSmsrTC15RVhzbDJNemhseUhMK1BIUWgrRjJxYU5UT2JOVGpGcVpJQm53ZnhJOGtuclkwPQ=="
